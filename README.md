@@ -26,6 +26,7 @@ moment: 2.16.0
 node-xlsx: 0.7.4
 
 selenium-webdriver: 3.0.1
+```
 
 ### install
 
@@ -33,3 +34,4 @@ selenium-webdriver: 3.0.1
 git clone https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_iPhone.git
 
 cd naver_moneybook_sms_auto_registration_for_iPhone
+```
