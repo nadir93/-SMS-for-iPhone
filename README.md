@@ -1,0 +1,1 @@
+# naver_moneybook_sms_auto_registration_for_iPhone
