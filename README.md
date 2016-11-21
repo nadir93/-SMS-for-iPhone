@@ -11,15 +11,10 @@
 hubot, hubot-slack
 
 ### dependency
-```
-moment: 2.16.0
 
-node-xlsx: 0.7.4
+moment: 2.16.0, node-xlsx: 0.7.4
 
-chromedriver: 2.25.1
-
-selenium-webdriver: 3.0.1
-```
+chromedriver: 2.25.1, selenium-webdriver: 3.0.1
 
 ### install
 
