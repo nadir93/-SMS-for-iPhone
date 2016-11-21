@@ -7,7 +7,7 @@
 
 ### description
 
-* 카드사용 SMS문자를 네이버 가계부에 등록해준다 *
+*카드사용 SMS문자를 네이버 가계부에 등록해준다*
 
 ### prerequisite
 
