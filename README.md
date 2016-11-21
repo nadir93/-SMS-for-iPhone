@@ -1,4 +1,4 @@
-# 네이버가계부 SMS 등록 for iPhone
+# 네이버가계부 SMS 반(?)자동 등록 for iPhone
 
 ### description
 
