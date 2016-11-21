@@ -1,1 +1,1 @@
-# naver_moneybook_sms_auto_registration_for_iPhone
+# 네이버가계부 SMS 등록 for iPhone
