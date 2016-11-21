@@ -13,12 +13,10 @@
 
 [node.js](https://nodejs.org/en/)
 
+hubot, hubot-slack
+
 ### dependency
 ```
-hubot : 2.19.0
-
-hubot-slack: 4.2.2
-
 moment: 2.16.0
 
 node-xlsx: 0.7.4
