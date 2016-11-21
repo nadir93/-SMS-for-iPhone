@@ -1,10 +1,5 @@
 # 네이버가계부 SMS 등록 for iPhone
 
-
-![iphone](https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_iPhone/blob/master/res/iphone_screen_capture.png)
-
-![moneybook](https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_iPhone/blob/master/res/moneybook_capture.png)
-
 ### description
 
 *카드사용 SMS문자를 네이버 가계부에 등록해준다*
@@ -33,3 +28,9 @@ git clone https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_i
 
 cd naver_moneybook_sms_auto_registration_for_iPhone
 ```
+
+### screenShot
+
+![iphone](https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_iPhone/blob/master/res/iphone_screen_capture.png)
+
+![moneybook](https://github.com/nadir93/naver_moneybook_sms_auto_registration_for_iPhone/blob/master/res/moneybook_capture.png)
