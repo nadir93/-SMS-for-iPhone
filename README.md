@@ -17,13 +17,13 @@
 ```
 hubot : 2.19.0
 
-chromedriver: 2.25.1
-
 hubot-slack: 4.2.2
 
 moment: 2.16.0
 
 node-xlsx: 0.7.4
+
+chromedriver: 2.25.1
 
 selenium-webdriver: 3.0.1
 ```
