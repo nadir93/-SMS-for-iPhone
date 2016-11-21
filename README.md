@@ -14,7 +14,7 @@
 [node.js](https://nodejs.org/en/)
 
 ### dependency
-
+```
 hubot : 2.19.0
 
 chromedriver: 2.25.1
