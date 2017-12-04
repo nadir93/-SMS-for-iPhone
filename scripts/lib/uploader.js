@@ -20,8 +20,9 @@ var url = 'https://nid.naver.com/nidlogin.login?url=http%3A%2F%2F' +
 var id = process.env.ID || "YOUR_NAVER_ID";
 var password = process.env.PASSWORD || "YOUR_NAVER_PASSWORD";
 
-var service = new chrome.ServiceBuilder(path).build();
-chrome.setDefaultService(service);
+// var service = new chrome.ServiceBuilder(path).build();
+// chrome.setDefaultService(service);
+// log.debug("chrome initialized");
 
 module.exports = {
   /**
@@ -29,50 +30,59 @@ module.exports = {
    * @param  {[type]} fileName [description]
    * @return {[type]}          [description]
    */
-  upload: function(fileName) {
-    return new Promise(function(resolve, reject) {
+  upload: function (fileName) {
+    return new Promise(function (resolve, reject) {
+
+      var chromeCapabilities = webdriver.Capabilities.chrome();
+      //setting chrome options to start the browser fully maximized
+      var chromeOptions = {
+        // 'args': ['--test-type', '--start-maximized']
+        'args': ['user-data-dir=/Users/nadir93/repo/EXPENSE_BOT/test/customProfile']
+      };
+      chromeCapabilities.set('chromeOptions', chromeOptions);
       var driver = new webdriver.Builder()
-        .withCapabilities(webdriver.Capabilities.chrome())
+        .withCapabilities(chromeCapabilities)
         .build();
 
-      driver.get(url).then(function() {
+      driver.get(url)
+        .then(function () {
           log.debug("first page loaded");
           log.debug("input id");
           return driver.wait(until.elementLocated(By.id('id')), 10 * 1000)
             .sendKeys(id);
         })
-        .then(function() {
+        .then(function () {
           log.debug("input pw");
           return driver.wait(until.elementLocated(By.id('pw')), 10 * 1000)
             .sendKeys(password)
         })
-        .then(function() {
+        .then(function () {
           log.debug("logging ...");
           return driver
             .wait(until.elementLocated(By.css('input[alt="로그인"]')), 10 * 1000)
             .click();
         })
-        .then(function() {
+        .then(function () {
           log.debug("go to excel popup window");
           return driver
             .wait(until.elementLocated(By.className('btn_import')), 10 * 1000)
             .click();
         })
-        .then(function() {
+        .then(function () {
           log.debug("wait popupwindow");
           return waitPopupWindow(driver);
         })
-        .then(function(handle) {
+        .then(function (handle) {
           log.debug("switch popup window");
           return driver.switchTo().window(handle);
         })
-        .then(function() {
+        .then(function () {
           log.debug("select card");
           return driver
             .findElement(By.css('.selectbox-source > option:nth-child(8)'))
             .click();
         })
-        .then(function() {
+        .then(function () {
           log.debug("input excel filename");
           log.debug("file = " + __dirname + '/data/' + fileName);
           return driver
@@ -80,22 +90,22 @@ module.exports = {
               .elementLocated(By.className('browse-file-input')), 10 * 1000)
             .sendKeys(__dirname + '/data/' + fileName);
         })
-        .then(function() {
+        .then(function () {
           log.debug("submit excel file");
           return driver
             .wait(until.elementLocated(By.id('btn_submit')), 10 * 1000)
             .click();
         })
-        .then(function() {
+        .then(function () {
           log.debug("waiting lastpage");
           return waitLastPage(driver);
         })
-        .then(function() {
+        .then(function () {
           log.debug("completed");
           driver.quit();
           resolve();
         })
-        .catch(function(e) {
+        .catch(function (e) {
           log.error(e);
           driver.quit();
           reject(e);
@@ -110,14 +120,14 @@ module.exports = {
  * @return {[type]}        [description]
  */
 function waitPopupWindow(driver) {
-  return new Promise(function(resolve, reject) {
-    var retryCount = 10;
+  return new Promise(function (resolve, reject) {
+    var retryCount = 100;
     var intervalTime = 1000;
-    var intervalJob = setInterval(function() {
+    var intervalJob = setInterval(function () {
       log.debug('retryCount = ' + retryCount);
       if (retryCount > 0) {
         driver.getAllWindowHandles()
-          .then(function(handles) {
+          .then(function (handles) {
             var popUpWindow = handles[1];
             log.debug('popUpWindow handle = ' + popUpWindow);
             if (popUpWindow) {
@@ -141,19 +151,19 @@ function waitPopupWindow(driver) {
  * @return {[type]}        [description]
  */
 function waitLastPage(driver) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var retryCount = 5;
     var intervalTime = 2000;
-    var intervalJob = setInterval(function() {
+    var intervalJob = setInterval(function () {
       log.debug('retryCount = ' + retryCount);
       if (retryCount > 0) {
         driver
           .wait(until.elementLocated(By.className('tit')), 1 * 1000)
-          .then(function(el) {
+          .then(function (el) {
             log.debug('element found');
             resolve();
             clearInterval(intervalJob);
-          }, function(err) {
+          }, function (err) {
             log.debug(err);
             clickFlachButton(driver);
           })
@@ -182,10 +192,10 @@ function clickFlachButton(driver) {
     })
     .click()
     .perform()
-    .then(function() {
+    .then(function () {
       log.debug("confirm button clicked");
       //driver.sleep(1000);
-    }, function(err) {
+    }, function (err) {
       log.error("error = " + err);
     });
 }
