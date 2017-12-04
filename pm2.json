@@ -11,9 +11,9 @@
         "error_file": "./logs/err.log",
         "port": "8079",
         "env": {
-            "HUBOT_SLACK_TOKEN": "my website domain",
-            "ID": "bot",
-            "PASSWORD": "",
+            "HUBOT_SLACK_TOKEN": "HUBOT_SLACK_TOKEN",
+            "ID": "YOUR_NAVER_ID",
+            "PASSWORD": "YOUR_NAVER_PASSWORD"
 
         }
     }]
