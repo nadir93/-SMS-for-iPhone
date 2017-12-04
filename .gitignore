@@ -37,6 +37,7 @@ bin/
 Procfile
 
 .editorconfig
+res/data
 
 
 # Dependency directories

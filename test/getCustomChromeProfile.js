@@ -16,8 +16,8 @@ var Logger = require('bunyan'),
   });
 
 var url = 'chrome://settings/content';
-var id = YOUR_ID;
-var password = YOUR_PASSWORD;
+var id = 'YOUR_ID';
+var password = 'YOUR_PASSWORD';
 
 var chromeCapabilities = webdriver.Capabilities.chrome();
 //setting chrome options to start the browser fully maximized

@@ -1,27 +1,28 @@
 /**
  * author : @nadir93
  */
-var loglevel = 'debug';
-var Logger = require('bunyan'),
+const loglevel = 'debug';
+const Logger = require('bunyan'),
   log = new Logger.createLogger({
     name: 'expensebot',
     level: loglevel
   });
-var util = require('util');
-var fs = require('fs');
-var excel = require('./lib/excel');
-var uploader = require('./lib/uploader');
+const util = require('util');
+const fs = require('fs');
+const excel = require('./lib/excel');
+const uploader = require('./lib/uploader');
 
-module.exports = function(robot) {
+module.exports = robot => {
 
-  robot.hear(/(.*)/i, function(msg) {
+  robot.hear(/(.*)/i, async msg => {
+
     log.debug('request', {
       message: msg.message.text,
       user: msg.message.user.name,
       channel: msg.message.user.room
     });
 
-    var content = makeTransactionObject(msg);
+    const content = makeTransactionObject(msg);
 
     if (content.title != '[Web발신]' || !content.card ||
       !content.name || !content.store || !content.amount ||
@@ -44,66 +45,65 @@ module.exports = function(robot) {
     }
 
     //write excel
-    var fileName = excel.writeFile(content);
+    const fileName = excel.writeFile(content);
     log.debug('fileName = ' + fileName);
 
     /**
      * upload excel file
      */
-    uploader.upload(fileName)
-      .then(function() {
-        log.debug('message respond');
-        msg.send({
-          "attachments": [{
-            //"title": "trlog get {전화번호}",
-            //"pretext": "trlogbot 사용법",
-            //"text": "```ex) trlog get 821021805043\n response : TRLog 전송 요청이 완료되었습니다```",
-            "fallback": "카드사용명세서",
-            "fields": [{
-              "title": "카드사",
-              "value": content.card,
-              "short": true
-            }, {
-              "title": "이름",
-              "value": content.name,
-              "short": true
-            }, {
-              "title": "일시",
-              "value": content.time,
-              "short": true
-            }, {
-              "title": "사용장소",
-              "value": content.store,
-              "short": true
-            }, {
-              "title": "금액",
-              "value": "`" + content.amount + "`",
-              "short": false
-            }],
-            "mrkdwn_in": ["text", "pretext", "fields"],
-            "color": "good"
-          }]
-        });
-      })
-      .catch(function(e) {
-        log.error(e);
-        msg.send({
-          "attachments": [{
-            "pretext": "*에러발생*",
-            "fallback": "에러발생",
-            "fields": [{
-              //"title": "에러발생",
-              "value": e.message,
-              "short": false
-            }],
-            "mrkdwn_in": ["text", "pretext", "fields"],
-            "color": "danger"
-          }]
-        });
-      })
+    try {
+      await uploader.upload(fileName);
+      log.debug('message respond');
+      msg.send({
+        "attachments": [{
+          //"title": "trlog get {전화번호}",
+          //"pretext": "trlogbot 사용법",
+          //"text": "```ex) trlog get 821021805043\n response : TRLog 전송 요청이 완료되었습니다```",
+          "fallback": "카드사용명세서",
+          "fields": [{
+            "title": "카드사",
+            "value": content.card,
+            "short": true
+          }, {
+            "title": "이름",
+            "value": content.name,
+            "short": true
+          }, {
+            "title": "일시",
+            "value": content.time,
+            "short": true
+          }, {
+            "title": "사용장소",
+            "value": content.store,
+            "short": true
+          }, {
+            "title": "금액",
+            "value": "`" + content.amount + "`",
+            "short": false
+          }],
+          "mrkdwn_in": ["text", "pretext", "fields"],
+          "color": "good"
+        }]
+      });
+    } catch (e) {
+      log.error(e);
+      msg.send({
+        "attachments": [{
+          "pretext": "*에러발생*",
+          "fallback": "에러발생",
+          "fields": [{
+            //"title": "에러발생",
+            "value": e.message,
+            "short": false
+          }],
+          "mrkdwn_in": ["text", "pretext", "fields"],
+          "color": "danger"
+        }]
+      });
+    }
   });
 
-  robot.respond(/(.*)/i, function(msg) {
+  robot.respond(/(.*)/i, msg => {
 
     log.debug('request', {
       message: msg.message.text,
@@ -112,7 +112,7 @@ module.exports = function(robot) {
     });
   });
 
-  robot.respond(/is it (weekend|holiday)\s?\?/i, function(msg) {
+  robot.respond(/is it (weekend|holiday)\s?\?/i, msg => {
 
     log.debug('request', {
       message: msg.message.text,
@@ -120,15 +120,15 @@ module.exports = function(robot) {
       channel: msg.message.user.room
     });
 
-    var today = new Date();
-    var res = today.getDay() === 0 || today.getDay() === 6 ? "YES" : "NO";
+    const today = new Date();
+    const res = today.getDay() === 0 || today.getDay() === 6 ? "YES" : "NO";
     msg.reply(res);
     log.debug('response', {
       message: res
     });
   });
 
-  robot.respond(/command$/i, function(msg) {
+  robot.respond(/command$/i, msg => {
 
     log.debug('request', {
       message: msg.message.text,
@@ -136,7 +136,7 @@ module.exports = function(robot) {
       channel: msg.message.user.room
     });
 
-    // var message = 'sys [hostname]\n' +
+    // const message = 'sys [hostname]\n' +
     //     'test [projectname] [hostname]\n' +
     //     'forever list [hostname]\n' +
     //     'tail status [file] [hostname]\n' +
@@ -177,15 +177,15 @@ module.exports = function(robot) {
  * @return {[type]}     [description]
  */
 function makeTransactionObject(msg) {
-  var array = msg.message.text.split('\n');
-  //var content = JSON.parse(msgArray);
+  const array = msg.message.text.split('\n');
+  //const content = JSON.parse(msgArray);
   //log.debug('content = ' + content);
 
   for (i = 0; i < array.length; i++) {
     log.debug('msg[' + i + '] = ' + array[i]);
   }
 
-  var content = {};
+  const content = {};
   content.title = array[0];
   content.card = array[1];
   content.name = array[2];

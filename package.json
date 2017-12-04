@@ -8,6 +8,7 @@
     "bunyan": "^1.8.12",
     "chromedriver": "^2.25.1",
     "coffee": "^4.1.0",
+    "coffee-script": "^1.12.7",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.7",
