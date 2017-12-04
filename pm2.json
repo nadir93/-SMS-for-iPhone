@@ -1,0 +1,20 @@
+{
+  "apps": [{
+        "name": "expensebot",
+        "max_memory_restart": "1024M",
+        "log_date_format": "YYYY-MM-DD HH:mm:ss SSS",
+        "script": "bin/hubot", 
+        "exec_interpreter": "bash",
+        "args": "--name myhubot --adapter slack",
+        "watch": ["package.json", "external-scripts.json", "scripts/", "hubot-scripts.json"],
+        "out_file": "./logs/app.log",
+        "error_file": "./logs/err.log",
+        "port": "8079",
+        "env": {
+            "HUBOT_SLACK_TOKEN": "my website domain",
+            "ID": "bot",
+            "PASSWORD": "",
+
+        }
+    }]
+}
